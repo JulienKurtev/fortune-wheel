@@ -257,7 +257,7 @@
 	VII. Init
   \* ------------------------------------------------------------ */
 
-  // Initialize sequence once (after functions exist)
+  // Initialize sequence
   winSequence = generateWinSequence();
 
   startBtn.addEventListener("click", () => {
