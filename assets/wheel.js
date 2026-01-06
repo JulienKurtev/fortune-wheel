@@ -42,26 +42,7 @@
   const TOTAL_SECTORS = 18;
   const DEGREE_PER_SECTOR = 360 / TOTAL_SECTORS;
 
-  const prizes = [
-    100,
-    20,
-    50,
-    30,
-    10,
-    80,
-    40,
-    15,
-    70,
-    "FreeSpins",
-    60,
-    35,
-    90,
-    45,
-    85,
-    55,
-    75,
-    65,
-  ];
+  const prizes = [ 100, 20, 50, 30, 10, 80, 40, 15, 70, "FreeSpins", 60, 35, 90, 45, 85, 55, 75, 65, ];
 
   let currentRotation = 0,
     isSpinning = false,
