@@ -1,0 +1,356 @@
+/* 
+  Table of Contents
+    I.   Generic -------------------------------------
+       1. Reset --------------------------------------
+       2. Variables ----------------------------------
+       3. General ------------------------------------
+  II.  Layout ----------------------------------------
+       1. Wrapper ------------------------------------
+       2. Game Container -----------------------------
+  III. Components ------------------------------------
+       1. Wheel --------------------------------------
+           Arrow -------------------------------------
+           Wheel Wrapper -----------------------------
+           Wheel Image -------------------------------
+           Sectors Overlay ---------------------------
+           Sector Labels -----------------------------
+       2. Controls -----------------------------------
+           Start Button ------------------------------
+           Spin Counter ------------------------------
+       3. Popup --------------------------------------
+           Overlay -----------------------------------
+           Dialog ------------------------------------
+           Animations --------------------------------
+  IV.  Responsive ------------------------------------
+       1. <= 768px -----------------------------------
+*/
+
+/* ------------------------------------------------------------ *\
+  I.   Generic
+\* ------------------------------------------------------------ */
+
+/* 1. Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+/* 2. Variables */
+
+:root {
+  /* Typography */
+  --font-family: "Arial", sans-serif;
+  --font-weight-bold: 700;
+
+  /* Layout */
+  --vh-min: 100vh;
+  --wrapper-padding-y: 50px;
+  --gap-lg: 30px;
+
+  /* Sizes */
+  --wheel-size: 600px;
+  --arrow-w: 90px;
+  --arrow-h: 60px;
+  --start-btn-top: 225px;
+  --start-img-size: 150px;
+  --label-radius: 200px;
+
+  /* Motion */
+  --spin-duration: 5s;
+  --spin-ease: cubic-bezier(0.17, 0.67, 0.12, 0.99);
+  --tap-duration: 0.2s;
+  --popup-duration: 0.3s;
+
+  /* Colors */
+  --text: #333;
+  --text-inverse: #fff;
+  --accent-blue: #54c0ee;
+  --accent-gold: #eda800;
+
+  /* Overlays */
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --counter-bg: rgba(0, 0, 0, 0.3);
+
+  /* Shadows */
+  --shadow-wheel: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-popup: 0 10px 40px rgba(0, 0, 0, 0.5);
+  --shadow-drop-sm: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  --shadow-drop-md: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  --text-shadow-sm: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  --text-shadow-lg: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  /* Radius */
+  --radius-button: 25px;
+  --radius-counter: 20px;
+  --radius-popup: 20px;
+}
+
+/* 3. General */
+
+body {
+  font-family: var(--font-family);
+}
+
+/* ------------------------------------------------------------ *\
+  II.   Layout
+\* ------------------------------------------------------------ */
+
+/* 1. Wrapper */
+
+.wrapper {
+  min-height: var(--vh-min);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--wrapper-padding-y) 0;
+}
+
+/* 2. Game Container */
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-lg);
+  position: relative;
+}
+
+/* ------------------------------------------------------------ *\
+  III.   Components
+\* ------------------------------------------------------------ */
+
+/* 1. Wheel */
+
+.wheel-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  position: absolute;
+  top: -25px;
+  z-index: 10;
+  width: var(--arrow-w);
+  height: var(--arrow-h);
+  filter: var(--shadow-drop-sm);
+}
+
+.wheel-wrapper {
+  position: relative;
+  width: var(--wheel-size);
+  height: var(--wheel-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform var(--spin-duration) var(--spin-ease);
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: var(--shadow-wheel);
+  transition: transform var(--spin-duration) var(--spin-ease);
+}
+
+.wheel.spinning {
+  transition: transform var(--spin-duration) var(--spin-ease);
+}
+
+.sectors-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sector-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  text-shadow: var(--text-shadow-sm);
+  pointer-events: none;
+}
+
+.sector-number {
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.sector-prize {
+  font-size: 18px;
+  color: #000;
+  padding: 2px 8px;
+  transform: rotate(90deg);
+  margin-top: -60px;
+  text-shadow: 1px 1px #fff;
+}
+
+.sector-label.freespins {
+  font-size: 16px;
+}
+
+/* 2. Controls */
+
+.start-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform var(--tap-duration);
+  filter: var(--shadow-drop-md);
+  display: inline-block;
+  position: absolute;
+  top: var(--start-btn-top);
+}
+
+.start-button:hover {
+  transform: scale(1.05);
+}
+
+.start-button:active {
+  transform: scale(0.95);
+}
+
+.start-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.start-button img {
+  width: var(--start-img-size);
+  height: var(--start-img-size);
+  display: block;
+}
+
+.spin-counter {
+  font-size: 20px;
+  color: var(--text-inverse);
+  font-weight: var(--font-weight-bold);
+  text-shadow: var(--text-shadow-lg);
+  background: var(--counter-bg);
+  padding: 10px 20px;
+  border-radius: var(--radius-counter);
+}
+
+/* Popup */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-bg);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-overlay.active {
+  display: flex;
+}
+
+.popup {
+  background: #fff;
+  padding: 40px;
+  border-radius: var(--radius-popup);
+  box-shadow: var(--shadow-popup);
+  text-align: center;
+  max-width: 400px;
+  animation: popupAppear var(--popup-duration) ease-out;
+}
+
+@keyframes popupAppear {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup h2 {
+  color: var(--accent-blue);
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.popup p {
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.popup-button {
+  background: var(--accent-gold);
+  color: var(--text-inverse);
+  border: none;
+  padding: 12px 40px;
+  font-size: 18px;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: transform var(--tap-duration);
+  font-weight: var(--font-weight-bold);
+}
+
+.popup-button:hover {
+  transform: scale(1.05);
+}
+
+.popup-button:active {
+  transform: scale(0.95);
+}
+
+/* ------------------------------------------------------------ *\
+  IV.   Responsive
+\* ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+  :root {
+    --wheel-size: 320px;
+    --arrow-w: 40px;
+    --arrow-h: 40px;
+    --start-btn-top: 110px;
+    --start-img-size: 100px;
+  }
+
+  .arrow {
+    top: -35px;
+  }
+
+  .sector-number {
+    font-size: 16px;
+  }
+
+  .sector-prize {
+    font-size: 12px;
+    margin-top: 150px;
+  }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Колело на късмета" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Колело на късмета</title>
+
+    <link rel="icon" type="image/png" href="images/wheel.png" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="game-container">
+        <div class="wheel-container">
+          <img src="images/arrow.png" alt="Стрелка" class="arrow" />
+
+          <div class="wheel-wrapper" id="wheel-wrapper">
+            <img src="images/wheel.png" alt="колело" class="wheel" id="wheel" />
+
+            <div class="sectors-overlay" id="sectorsOverlay"></div>
+          </div>
+        </div>
+
+        <button class="start-button" id="startBtn">
+          <img src="images/btnstart.png" alt="Старт" />
+        </button>
+      </div>
+
+      <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+          <h2 id="popupTitle">Поздравления!</h2>
+
+          <p id="popupMessage"></p>
+
+          <button class="popup-button" id="popupBtn">Затвори</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./assets/wheel.js" defer></script>
+  </body>
+</html>
